@@ -1,0 +1,18 @@
+# Xcode / build output
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+*.moved-aside
+
+# Packaging
+Payload/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# macOS / misc
+.DS_Store
+*.swp
+.build/

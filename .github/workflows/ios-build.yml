@@ -1,0 +1,53 @@
+name: Build iOS (unsigned IPA)
+
+# Builds Facet on a free cloud macOS runner and uploads an unsigned .ipa you can
+# download. No Mac required on your side. Install it on your iPhone from Windows
+# with Sideloadly or AltStore (see BUILD_WITHOUT_MAC.md) — those re-sign the app
+# with your own Apple ID, so no paid developer account is needed just to test.
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:        # lets you run it manually from the Actions tab
+
+jobs:
+  build:
+    runs-on: macos-15       # provides Xcode 16 (needed by this project)
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: xcodebuild -version
+
+      - name: Build (unsigned)
+        run: |
+          set -euo pipefail
+          xcodebuild build \
+            -project Facet.xcodeproj \
+            -target Facet \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Package into Facet.ipa
+        run: |
+          set -euo pipefail
+          APP_DIR="build/Build/Products/Release-iphoneos"
+          cd "$APP_DIR"
+          rm -rf Payload
+          mkdir Payload
+          cp -R Facet.app Payload/
+          zip -qr Facet.ipa Payload
+          mkdir -p "$GITHUB_WORKSPACE/artifacts"
+          mv Facet.ipa "$GITHUB_WORKSPACE/artifacts/Facet.ipa"
+
+      - name: Upload the IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Facet-unsigned-ipa
+          path: artifacts/Facet.ipa
+          if-no-files-found: error
