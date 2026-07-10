@@ -7,6 +7,7 @@
 //  simple: the user picks, then analysis runs on-device.
 //
 
+import SwiftUI
 import PhotosUI
 import UIKit
 
