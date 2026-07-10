@@ -31,7 +31,7 @@ jobs:
             CONFIGURATION_BUILD_DIR="$PWD/build/out" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" 2>&1 | tee build.log
 
       - name: Package into Facet.ipa
         run: |
@@ -49,3 +49,22 @@ jobs:
           name: Facet-unsigned-ipa
           path: artifacts/Facet.ipa
           if-no-files-found: error
+
+      # On failure, publish the compiler errors as an issue so they can be read
+      # from the public API. (Auto-created; safe to close.)
+      - name: Report build errors
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            echo '```'
+            if grep -qE "error: " build.log; then
+              grep -E "error: |The following build commands failed|xcodebuild: error" build.log \
+                | sed -E 's#^.*/Facet/Facet/#Facet/#' | head -n 150
+            else
+              tail -n 120 build.log
+            fi
+            echo '```'
+          } > body.md
+          gh issue create --title "CI build errors (run ${GITHUB_RUN_NUMBER})" --body-file body.md
