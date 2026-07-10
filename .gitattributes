@@ -1,0 +1,4 @@
+# Normalize line endings so cloud (Linux/macOS) build runners get LF scripts.
+* text=auto eol=lf
+*.png binary
+*.ipa binary
