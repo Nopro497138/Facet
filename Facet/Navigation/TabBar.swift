@@ -23,10 +23,10 @@ struct TabBar: View {
             tabButton(tabs[2])
             tabButton(tabs[3])
         }
-        .padding(7)
-        .glassCard(cornerRadius: 26)
-        .padding(.horizontal, 26)
-        .padding(.bottom, 6)
+        .padding(6)
+        .glassCard(cornerRadius: 24)
+        .padding(.horizontal, 16)
+        .padding(.bottom, 4)
     }
 
     private func tabButton(_ screen: Screen) -> some View {

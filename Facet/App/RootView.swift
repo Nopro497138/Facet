@@ -53,10 +53,10 @@ struct RootView: View {
 /// A consistent scrollable container for stages: standard insets and room for the
 /// floating tab bar.
 struct ScreenScaffold<Content: View>: View {
-    var spacing: CGFloat = 16
+    var spacing: CGFloat = 14
     var content: Content
 
-    init(spacing: CGFloat = 16, @ViewBuilder content: () -> Content) {
+    init(spacing: CGFloat = 14, @ViewBuilder content: () -> Content) {
         self.spacing = spacing
         self.content = content()
     }
@@ -66,9 +66,9 @@ struct ScreenScaffold<Content: View>: View {
             VStack(alignment: .leading, spacing: spacing) {
                 content
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .padding(.bottom, 120)   // clear the floating tab bar
+            .padding(.horizontal, 16)
+            .padding(.top, 4)
+            .padding(.bottom, 100)   // clear the floating tab bar
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }

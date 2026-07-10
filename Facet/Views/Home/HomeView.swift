@@ -17,9 +17,9 @@ struct HomeView: View {
         ScreenScaffold {
             header
 
-            GlowOrb()
+            GlowOrb(size: 148)
                 .frame(maxWidth: .infinity)
-                .frame(height: 260)
+                .frame(height: 208)
 
             statRow
 
@@ -47,12 +47,12 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Eyebrow(text: greeting)
                 Text("Your face,\nunderstood.")
-                    .font(.facetTitle(30))
+                    .font(.facetTitle(26))
                     .foregroundStyle(Palette.text)
                     .lineSpacing(0)
             }
             Spacer()
-            AppIconMark(size: 42)
+            AppIconMark(size: 38)
         }
         .padding(.top, 4)
     }
