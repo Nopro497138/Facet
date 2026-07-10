@@ -20,14 +20,14 @@ workflows:
             -target Facet \
             -configuration Release \
             -sdk iphoneos \
-            -derivedDataPath build \
+            CONFIGURATION_BUILD_DIR="$PWD/build/out" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
       - name: Package into Facet.ipa
         script: |
           set -euo pipefail
-          cd build/Build/Products/Release-iphoneos
+          cd build/out
           rm -rf Payload && mkdir Payload
           cp -R Facet.app Payload/
           zip -qr "$CM_BUILD_DIR/Facet.ipa" Payload

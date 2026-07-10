@@ -28,7 +28,7 @@ jobs:
             -target Facet \
             -configuration Release \
             -sdk iphoneos \
-            -derivedDataPath build \
+            CONFIGURATION_BUILD_DIR="$PWD/build/out" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
@@ -36,14 +36,12 @@ jobs:
       - name: Package into Facet.ipa
         run: |
           set -euo pipefail
-          APP_DIR="build/Build/Products/Release-iphoneos"
-          cd "$APP_DIR"
+          mkdir -p "$GITHUB_WORKSPACE/artifacts"
+          cd build/out
           rm -rf Payload
           mkdir Payload
           cp -R Facet.app Payload/
-          zip -qr Facet.ipa Payload
-          mkdir -p "$GITHUB_WORKSPACE/artifacts"
-          mv Facet.ipa "$GITHUB_WORKSPACE/artifacts/Facet.ipa"
+          zip -qr "$GITHUB_WORKSPACE/artifacts/Facet.ipa" Payload
 
       - name: Upload the IPA
         uses: actions/upload-artifact@v4
