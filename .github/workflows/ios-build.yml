@@ -10,6 +10,10 @@ on:
     branches: [ main, master ]
   workflow_dispatch:        # lets you run it manually from the Actions tab
 
+permissions:
+  contents: read
+  issues: write             # lets the failure step file the compiler errors as an issue
+
 jobs:
   build:
     runs-on: macos-15       # provides Xcode 16 (needed by this project)
